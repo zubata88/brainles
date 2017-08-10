@@ -7,10 +7,68 @@
 		<title>reveal.js</title>
 
 		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/black.css">
+		<link rel="stylesheet" href="css/theme/dbe.css">
 
 		<!-- Theme used for syntax highlighting of code -->
 		<link rel="stylesheet" href="lib/css/zenburn.css">
+		<script type="text/x-mathjax-config">
+    // <![CDATA[
+    MathJax.Hub.Config({ 
+        TeX: {extensions: ["AMSmath.js", "AMSsymbols.js"]},     
+        extensions: ["tex2jax.js"],
+        jax: ["input/TeX", "output/HTML-CSS"],
+        showProcessingMessages : false,
+        messageStyle : "none" ,    
+        showMathMenu: false ,
+        tex2jax: {
+            processEnvironments: true,
+            inlineMath: [ ['$','$'], ["\((","\))"] ],
+            displayMath: [ ['$$','$$'], ["\[","\]"] ],
+            preview : "none",
+            processEscapes: true
+        },
+        "HTML-CSS": { linebreaks: { automatic:true, width: "latex-container"} }
+    });
+    // ]]>
+</script>
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+		<link rel="stylesheet" href="css/latex2html5.css"/> 
+     <script type="text/javascript" src="js/latex2html5.min.js"></script>
+	 <script src="https://cdnjs.cloudflare.com/ajax/libs/synaptic/1.0.10/synaptic.js"></script>
+		<style>
+			  
+			   @font-face {
+				font-family: "Computer Modern";
+				src: url('css/cmunrm.otf');
+			  }
+			  @font-face {
+				font-family: "Computer Modern";
+				src: url('css/cmunbx.otf');
+				font-weight: bold;
+			  }
+			  @font-face {
+				font-family: "Computer Modern";
+				src: url('css/cmunti.otf');
+				font-style: italic;
+			  }
+
+
+  body {
+    font-family: "Computer Modern", sans-serif;
+  }
+			.reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5,.reveal h6, .reveal p, .reveal div {
+				font-family:Computer Modern;
+				text-transform: none;
+			}
+			.reveal button, .reveal input[type=number] {
+				border-radius:4px;
+				margin-left:5px;
+			}
+			.reveal input[type=number] {
+				margin-bottom:5px;
+			}
+		</style>
+
 
 		<!-- Printing and PDF exports -->
 		<script>
@@ -24,8 +82,868 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
+		<div class="logo_unibas">
+			<object data="images/UniBas_Logo_EN_Schwarz_RGB_65-eps-converted-to.svg" type="image/svg+xml">
+				<img src="images/UniBas_Logo_EN_Schwarz_RGB_65-eps-converted-to.png" />
+			</object>
+		</div>
+		<div class="logo_dbe">
+			<object data="images/DBE_Logo_RGB-eps-converted-to.svg" type="image/svg+xml">
+				<img src="images/DBE_Logo_RGB-eps-converted-to.png" />
+			</object>
+		</div>
+<section>
+					<h3>Multi-dimensional Gated Recurrent Units (MD-GRU) for Semantic Segmentation</h3>
+					<br>
+					<p>Simon Andermatt, Simon Pezold, Philippe Cattin</p>
+					
+				</section>
+				<section><h4>Segmentation <br>with Supervised Learning</h4>
+				Data:
+				<div >
+ <img style="border:none; width:49%; height:49%; vertical-align:middle; display:inline-block;" src="images/mdgru-lesion-seg-31-22.png">
+ <img style="border:none; width:49%; height:49%; vertical-align:middle; display:inline-block;" src="images/mdgru-lesion-seg-2-18.png">
+</div>
+				Goal:
+<div style="">
+<img style="border:none; width:40%; vertical-align:middle; display:inline-block;"  src="images/mdgru-lesion-seg-37-33-left.png"><div style="display:inline-block; margin:10px; padding:20px; border:5px solid gray;" class="fragment">$F_\theta(I)=S$</div>
+ <img style="border:none; width:20%; vertical-align:middle; display:inline-block;" class=""  src="images/mdgru-lesion-seg-37-33-right.png">
+</div>
+<div style="font-size:50%; padding-top:20px;">(Data from  <a href="http://wmh.isi.uu.nl/" >WMH Challenge MICCAI 2017</a>)</div>
+				</section>
+				<section id="firstjssection">
+					<h4>Recurrent Neural Network (RNN) </h4>
+					<h6>toy example:</h6>
+					<object type="image/svg+xml" data="images/simplernngatto-topath2-encoding.svg" id="svgObject"></object>
+					<button id="svg1button">next</button>
+					<button id="svg1resetbutton">reset</button>
+					<button id="svg1encodingbutton">encoding</button>
+
+					<script>
+						document.getElementById('svgObject').addEventListener('load',function(){
+						var a = document.getElementById("svgObject");
+						console.log(a);
+						try {
+						var svgDoc = a.contentDocument;
+						$(svgDoc).find("#hide-encoding").toggle();
+						$(svgDoc).find("#text15387 tspan tspan").css({"font-family":"monospace"});
+						$(svgDoc).find("#text15363 tspan tspan").css({"font-family":"monospace"});
+						//console.log(svgDoc);
+						var svgItem = svgDoc.getElementById("g8436");
+						
+						var pos = 135;
+						var inputtext ="katze    ";
+						var outputtext ="   gatto";
+						var iteration = 0;
+					    svgItem.style.transform = "translate("+pos+"px,0px)";
+						next=function(){
+							iteration+=1;
+							pos = 135-iteration*33.5;
+							svgItem.style.transform = "translate("+pos+"px,0px)";
+							if (iteration <= 0) {
+								$(svgDoc).find("#o tspan tspan")[0].textContent="t";
+								$(svgDoc).find("#i tspan tspan")[0].textContent="t";
+								$(svgDoc).find("#h tspan tspan")[0].textContent="t-1";
+								$(svgDoc).find("#tspan15429")[0].textContent="t-1";
+								$(svgDoc).find("#tspan15425")[0].textContent="t";
+							} else {
+								$(svgDoc).find("#o tspan tspan")[0].textContent="t+"+iteration;
+								$(svgDoc).find("#i tspan tspan")[0].textContent="t+"+iteration;
+								$(svgDoc).find("#tspan15425")[0].textContent="t+"+iteration;
+								if (iteration==1) {
+									$(svgDoc).find("#h tspan tspan")[0].textContent="t";
+									$(svgDoc).find("#tspan15429")[0].textContent="t";
+
+								} else {
+									$(svgDoc).find("#h tspan tspan")[0].textContent="t+"+(iteration-1);
+									$(svgDoc).find("#tspan15429")[0].textContent="t+"+(iteration-1);
+
+								}
+							}
+							//change input encoding
+							loc = inputtext.charCodeAt(iteration)-97;
+							var text = "";
+							var found = 0;
+							for (i = 0; i < 14; i++) {
+								if (i == loc) {
+									found=1;
+									text+= "  1";
+								} else {
+									text+= "  0";
+								}
+							}
+							var text2 = "";
+							for (i = 14; i < 26; i++) {
+								if (i == loc) {
+									found=1;
+									text2+= "  1";
+								} else {
+									text2+= "  0";
+								}
+							}
+							if (found < 1) {
+								text2+= "  1";
+							} else {
+								text2+= "  0";
+							}
+							console.log(text);
+							tempitemp = svgDoc;
+							$(svgDoc).find("#text15363 tspan tspan:eq(2)")[0].textContent = text;
+							$(svgDoc).find("#text15363 tspan tspan:eq(6)")[0].textContent = text2;
+							
+							
+							
+							//change output encoding
+						    loc = outputtext.charCodeAt(iteration)-97;
+							var array = [];
+							var sum = 0;
+							for (i = 0; i < 27; i++) {
+								array.push(Math.pow(Math.random(),10));
+								sum += array[i];
+							}
+							found = 0;
+							for (i = 0; i < 26; i++) {
+								array[i]/=sum;
+								array[i]*=0.5;
+								if (i == loc) {
+									array[i]+=0.5;
+									found = 1;
+								}
+							}
+							array[26]/=sum;
+							array[26]*=0.5;
+							if (found < 1) {
+							   	array[26]+=0.5;
+
+							}
+							text = "";
+							found = 0;
+							$(svgDoc).find("#text15387 tspan tspan:eq(2)")[0].textContent = "";
+							for (i = 0; i < 14; i++) {
+								if (array[i] >= 0.5) {
+									text+= "<tspan style='fill:#00ff00;'> ." + String(Math.round(array[i]*10))+String(Math.round(array[i]*100)%10) + "</tspan>";
+								} else {
+									text += " ." + String(Math.round(array[i]*10))+String(Math.round(array[i]*100)%10);
+								}
+							}
+							text2 = "";
+							for (i = 14; i < 27; i++) {
+								if (array[i] >= 0.5) {
+									text2+= "<tspan style='fill:#00ff00;'> ." + String(Math.round(array[i]*10))+String(Math.round(array[i]*100)%10) + "</tspan>";
+								} else {
+									text2+= " ." + String(Math.round(array[i]*10))+String(Math.round(array[i]*100)%10);
+								}
+							}
+							$(svgDoc).find("#tspan15391")[0].textContent = "| a | b | c | d | e | f | g | h | i | j | k | l | m | n |";
+							$(svgDoc).find("#tspan15391").css({"font-family":"monospace"});
+							$(svgDoc).find("#tspan15397")[0].innerHTML =text;
+							$(svgDoc).find("#tspan15397").css({"font-family":"monospace"});
+							$(svgDoc).find("#tspan15403")[0].textContent = "| o | p | q | r | s | t | u | v | w | x | y | z |   | ";
+							$(svgDoc).find("#tspan15403").css({"font-family":"monospace"});
+							$(svgDoc).find("#tspan15409")[0].innerHTML = text2;
+							$(svgDoc).find("#tspan15409").css({"font-family":"monospace"});
+
+							console.log("in svg1button");
+					    };
+						$('#svg1button').click(next);
+						$('#svg1resetbutton').click(function(){
+							iteration=-1;
+							next();
+							console.log("in svg1resetbutton");	
+					    });
+					    $('#svg1encodingbutton').click(function(){
+							$(svgDoc).find("#hide-encoding").toggle();
+							console.log("in hideencodingbutton");	
+					    });
+						}
+						catch(err) {
+							$("#svg1button").disabled=true;
+							$("#svg1resetbutton").disabled=true;
+							$("#svg1encodingbutton").disabled=true;
+						}
+						});
+					</script>
+				</section>
+
+				<section><h4>Most simple GRU Setup</h4>
+				<object type="image/svg+xml" data="images/scheme.svg" id="scheme"><!--fallback--></object>
+				<br>
+				<span class="button-controls" style="font-size: 60%">
+				Wz<input style="width:50px" id="sliderwz" type ="number" min ="-100" max="100" step ="0.1" value ="0" step="any" />
+				Wr<input style="width:50px" id="sliderwr" type ="number" min ="-100" max="100" step ="0.1" value ="0" step="any"/>
+				Wc<input style="width:50px" id="sliderwc" type ="number" min ="-100" max="100" step ="0.1" value ="0" step="any"/>
+				Uz<input style="width:50px" id="slideruz" type ="number" min ="-100" max="100" step ="0.1" value ="0" step="any"/>
+				Ur<input style="width:50px" id="sliderur" type ="number" min ="-100" max="100" step ="0.1" value ="0" step="any"/>
+				Uc<input style="width:50px" id="slideruc" type ="number" min ="-100" max="100" step ="0.1" value ="0" step="any" />
+				bz<input style="width:50px" id="sliderbz" type ="number" min ="-100" max="100" step ="0.1" value ="0" step="any"/>
+				br<input style="width:50px" id="sliderbr" type ="number" min ="-100" max="100" step ="0.1" value ="0" step="any"/>
+				bc<input style="width:50px" id="sliderbc" type ="number" min ="-100" max="100" step ="0.1" value ="0" step="any"/><br>
+<input type="radio" name="loss" value="l2" checked> L2
+<input type="radio" name="loss" value="cc"> CC  | <input type="checkbox" name="sampleril" value="il" id="sampleril"> il
+<input type="checkbox" id="samplerinv" value="inv"> inv | <button id="resample">resample</button><button id="stepone">step</button><button id="reset">move back</button><span>   </span><button id="optimize">opt1000</button><button id="optimizefully">optfully</button><button id="resetall">reset</button>
+</span>
+				<script>
+				var getDoc = function() {
+					try {
+						var a = document.getElementById("scheme");
+						var svgDoc = a.contentDocument;
+						return svgDoc;
+					}catch(err) {
+						console.log('found mistake in scheme');
+					}
+				};
+				var sigmoid = function(x) {
+					return 1.0/(1.0+Math.exp(-x));
+				};
+				var tanh = function(x) {
+					return Math.tanh(x);
+				};
+				var reset_all = function() {
+					$('input[type=number]').each(function(e){
+						$(this).val(randn_bm(0.1)).change();
+						t=0;
+					});
+				};
+				
+				inps = [0,0,0,0,0,0,0,0];
+				labs = [0,0,0,0,0,0,0,0];
+				outs = [0,0,0,0,0,0,0,0,0];
+				c = [0,0,0,0,0,0,0,0];
+				r = [0,0,0,0,0,0,0,0];
+				z = [0,0,0,0,0,0,0,0];
+				dz = [0,0,0,0,0,0,0,0];
+				dout = [0,0,0,0,0,0,0,0];
+				dr = [0,0,0,0,0,0,0,0];
+				dc = [0,0,0,0,0,0,0,0];
+				curr_pos = 0;
+				olr = 0.01;
+				batch_size = 32;
+				lr = olr;
+				lrdr = 1;
+				dwz = 0; dwr = 0; dwc = 0; duz = 0; dur = 0; duc = 0; dbz = 0; dbr = 0; dbc = 0;
+				dist = 0.5;
+				beta1=0.9;
+				beta2=0.999;
+				epsilon=1e-08;
+				moments = [0,0,0,0,0,0,0,0,0];
+				moments2 = [0,0,0,0,0,0,0,0,0];
+				estm = 0;
+				estm2 = 0;
+				t = 0;
+				
+				var forward_step = function(wz,wr,wc,uz,ur,uc,bz,br,bc) {
+					z[curr_pos] = sigmoid(wz*inps[curr_pos]+uz*outs[curr_pos]+bz);
+					r[curr_pos] = sigmoid(wr*inps[curr_pos]+ur*outs[curr_pos]+br);
+					c[curr_pos] = tanh(wc*inps[curr_pos]+uc*outs[curr_pos]*r[curr_pos]+bc);
+					outs[curr_pos+1] = c[curr_pos]*z[curr_pos]+outs[curr_pos]*(1-z[curr_pos]);
+				};
+				var eval_cost_l2 = function() {
+					cost = 0;
+					for (it = 0; it < 8; it++) {
+						var a = (labs[it]-outs[it+1]);
+						a*=a;
+						cost+= a/2;
+					}
+					return cost;
+				};
+				var deval_cost_l2 = function() {
+					for (it = 0; it < 8; it++) {
+						dout[it] = labs[it]-outs[it+1];
+					}
+				};
+
+				var eval_cost = function() {
+					cost = 0;
+					for (it = 0; it < 8; it++) {
+						if (labs[it]==1) {
+							cost+= -Math.log(sigmoid(outs[it+1])+1e-15);
+						}else {
+							cost += -Math.log(1-sigmoid(outs[it+1])+1e-15);
+						}
+					}
+					return cost;
+				};
+				var deval_cost = function() {
+					for (it = 0; it < 8; it++) {
+						dout[it] = labs[it]-sigmoid(outs[it+1]);
+					}
+				};
+				var backward_step = function() {
+					dz[curr_pos] = (-outs[curr_pos]+c[curr_pos])*dout[curr_pos];
+					dc[curr_pos] = z[curr_pos]*dout[curr_pos];
+					dr[curr_pos] = (1-c[curr_pos]*c[curr_pos])*outs[curr_pos]*uc*dc[curr_pos];
+					if (curr_pos>0) {
+						dout[curr_pos-1] += (1-z[curr_pos])*z[curr_pos]*dz[curr_pos]*uz +(1-r[curr_pos])*r[curr_pos]*dr[curr_pos]*ur +(r[curr_pos]*(1-c[curr_pos]*c[curr_pos]))*dc[curr_pos]*uc +(1-z[curr_pos])*dout[curr_pos];
+						//console.log(dout[curr_pos-1]);
+					}
+					
+					dwz += inps[curr_pos]*z[curr_pos]*(1-z[curr_pos])*dz[curr_pos];
+					dwr += inps[curr_pos]*r[curr_pos]*(1-r[curr_pos])*dr[curr_pos];
+					dwc += inps[curr_pos]*(1-c[curr_pos]*c[curr_pos])*dc[curr_pos];
+					
+					duz += outs[curr_pos]*z[curr_pos]*(1-z[curr_pos])*dz[curr_pos];
+					dur += outs[curr_pos]*r[curr_pos]*(1-r[curr_pos])*dr[curr_pos];
+					duc += outs[curr_pos]*(1-c[curr_pos]*c[curr_pos])*r[curr_pos]*dc[curr_pos];
+					
+					dbz += z[curr_pos]*(1-z[curr_pos])*dz[curr_pos];
+					dbr += r[curr_pos]*(1-r[curr_pos])*dr[curr_pos];
+					dbc += (1-c[curr_pos]*c[curr_pos])*dc[curr_pos];
+				};
+
+				var update_weights_adam = function(dwz,dwr,dwc,duz,dur,duc,dbz,dbr,dbc) {
+					t+=1;
+					gradients = [dwz,dwr,dwc,duz,dur,duc,dbz,dbr,dbc];
+					gradients.forEach(function(val,i,arr){arr[i]/=batch_size;});
+					moments.forEach(function(val,i,arr){arr[i]*=beta1; arr[i]+= (1-beta1)*gradients[i];});
+					moments2.forEach(function(val,i,arr){arr[i]*=beta2; arr[i]+= (1-beta2)*gradients[i]*gradients[i];});
+					update = gradients;
+					update.forEach(function(val,i,arr){
+						var num = moments[i]/(1.0-Math.pow(beta1,t));
+						var denom = Math.sqrt(moments2[i]/(1.0-Math.pow(beta2,t))+epsilon);
+						arr[i]+=num/denom;
+					});
+					wz+=lr*update[0];
+					wr+=lr*update[1];
+					wc+=lr*update[2];
+					uz+=lr*update[3];
+					ur+=lr*update[4];
+					uc+=lr*update[5];
+					bz+=lr*update[6];
+					br+=lr*update[7];
+					bc+=lr*update[8];
+				};
+				var update_weights_sgd = function(dwz,dwr,dwc,duz,dur,duc,dbz,dbr,dbc) {
+					wz+=lr*dwz;
+					wr+=lr*dwr;
+					wc+=lr*dwc;
+					uz+=lr*duz;
+					ur+=lr*dur;
+					uc+=lr*duc;
+					bz+=lr*dbz;
+					br+=lr*dbr;
+					bc+=lr*dbc;
+				};
+				var optimize = function(iters) {
+				
+					wz = parseFloat($('#sliderwz').val());
+					wr = parseFloat($('#sliderwr').val());
+					wc = parseFloat($('#sliderwc').val());
+					
+					uz = parseFloat($('#slideruz').val());
+					ur = parseFloat($('#sliderur').val());
+					uc = parseFloat($('#slideruc').val());
+					
+					bz = parseFloat($('#sliderbz').val());
+					br = parseFloat($('#sliderbr').val());
+					bc = parseFloat($('#sliderbc').val());
+					evalloss = 0;
+					for (i = 0; i < iters; i++) {
+						dwz = 0; dwr = 0; dwc = 0; duz = 0; dur = 0; duc = 0; dbz = 0; dbr = 0; dbc = 0;
+						for (j = 0; j < batch_size; j++) {
+							sample();
+							outs[0] = 0;
+							for (it = 0; it < 8; it++) {
+								curr_pos = it;
+								forward_step(wz,wr,wc,uz,ur,uc,bz,br,bc);
+							}
+							evalloss += loss();
+							dloss();
+							
+							for (it = 7; it >= 0; it--) {
+								curr_pos = it;
+								backward_step(wz,wr,wc,uz,ur,uc,bz,br,bc);
+							}
+						}
+						update_weights_adam(dwz,dwr,dwc,duz,dur,duc,dbz,dbr,dbc);
+					}
+					console.log("loss: "+(evalloss/iters/batch_size));
+				
+					
+					//console.log([dwz,dwr,dwc,duz,dur,duc,dbz,dbr,dbc])
+					
+					$('#sliderwz').val(wz).change();
+					$('#sliderwr').val(wr).change();
+					$('#sliderwc').val(wc).change();
+					
+					$('#slideruz').val(uz).change();
+					$('#sliderur').val(ur).change();
+					$('#slideruc').val(uc).change();
+					
+					$('#sliderbz').val(bz).change();
+					$('#sliderbr').val(br).change();
+					$('#sliderbc').val(bc).change();
+					vis_resample();
+				};
+				var optimize_fully = function() {
+					lr = olr;
+					for (e = 0; e < 6; e++) {
+						optimize(100000/batch_size);
+						lr *= lrdr;
+					}
+				};
+				var block = function() {
+					start = Math.floor(Math.random()*4);
+					end = Math.min(start+Math.floor(Math.random()*5)+1,7);
+					for(it = 1; it < 9; it++) {
+						if (it-1 < start || it-1 > end) {
+							labs[it-1] = 0;
+						} else {
+							labs[it-1] = 1;
+						}
+						
+						inps[it-1] = -Math.random()*(1-dist)-dist;						
+					}
+
+					inps[start] = Math.random()*(1-dist)+dist;
+					inps[end] = Math.random()*(1-dist)+dist;
+					
+				};
+				sample = block;
+				var inverse_block = function() {
+					start = Math.floor(Math.random()*4);
+					end = Math.min(start+Math.floor(Math.random()*5)+1,7);
+					for(it = 1; it < 9; it++) {
+						if (it-1 < start || it-1 > end) {
+							labs[it-1] = 1;
+						} else {
+							labs[it-1] = 0;
+						}
+						
+						inps[it-1] = -Math.random()*(1-dist)-dist;						
+					}
+
+					inps[start] = Math.random()*(1-dist)+dist;
+					inps[end] = Math.random()*(1-dist)+dist;
+					
+				};
+				var interleave_block = function() {
+					start = Math.floor(Math.random()*4);
+					end = Math.min(start+Math.floor(Math.random()*5)+1,7);
+
+					for(it = 1; it < 9; it++) {
+						if (it-1 < start || it-1 > end) {
+							labs[it-1] = 0;
+						} else {
+							labs[it-1] = (it-start)%2;
+						}
+						
+						inps[it-1] = -Math.random()*(1-dist)-dist;						
+					}
+
+					inps[start] = Math.random()*(1-dist)+dist;
+					inps[end] = Math.random()*(1-dist)+dist;
+				};
+				var inverse_interleave_block = function() {
+					start = Math.floor(Math.random()*4);
+					end = Math.min(start+Math.floor(Math.random()*5)+1,7);
+
+					for(it = 1; it < 9; it++) {
+						if (it-1 < start || it-1 > end) {
+							labs[it-1] = 1;
+						} else {
+							labs[it-1] = 1-(it-start)%2;
+						}
+						
+						inps[it-1] = -Math.random()*(1-dist)-dist;						
+					}
+
+					inps[start] = Math.random()*(1-dist)+dist;
+					inps[end] = Math.random()*(1-dist)+dist;
+				};
+				var updateSampler = function() {
+					il = document.getElementById('sampleril').checked;
+					inv = document.getElementById('samplerinv').checked;
+					if (il) {
+						if (inv) {
+							sample = inverse_interleave_block;
+						} else {
+							sample = interleave_block;
+						}
+					} else {
+						if (inv) {
+							sample = inverse_block;
+						} else {
+							sample = block;
+						}
+					}
+					vis_resample();
+				};
+				var vis_resample = function() {
+					sample();
+					svgDoc = getDoc();
+					for(it = 1; it < 9; it++) {
+						col = Math.floor((inps[it-1]+1)/2*256);
+						console.log("#inp"+it);
+						$(svgDoc).find("#inp"+it).css({'fill':'rgb('+col+','+col+','+col+')'});
+						$(svgDoc).find("#out"+it).css({'fill':'rgb(0,0,0)'});
+						lab = (labs[it-1]+1)*128;
+						$(svgDoc).find("#lab"+it).css({'fill':'rgb('+lab+','+lab+','+lab+')'});
+					}
+					reinit(svgDoc);
+				};
+				var reinit = function() {
+					var svgDoc = getDoc();
+					//random setup:
+					curr_pos = -1;
+					set_pos(0);
+					$(svgDoc).find("#out0").css({'fill':"rgb(0,0,0)"});
+					$(svgDoc).find("#z").css({'fill':"rgb(0,0,0)"});
+					$(svgDoc).find("#r").css({'fill':"rgb(0,0,0)"});
+					$(svgDoc).find("#c").css({'fill':"rgb(0,0,0)"});
+				};
+				
+				var compute_pos = function() {
+					//get variables:
+					wz = parseFloat($('#sliderwz').val());
+					wr = parseFloat($('#sliderwr').val());
+					wc = parseFloat($('#sliderwc').val());
+					
+					uz = parseFloat($('#slideruz').val());
+					ur = parseFloat($('#sliderur').val());
+					uc = parseFloat($('#slideruc').val());
+					
+					bz = parseFloat($('#sliderbz').val());
+					br = parseFloat($('#sliderbr').val());
+					bc = parseFloat($('#sliderbc').val());
+					
+					forward_step(wz,wr,wc,uz,ur,uc,bz,br,bc);
+
+					
+					//paint stuff
+					svgDoc = getDoc();
+					zcol = Math.floor(z[curr_pos]*256);
+					ccol = Math.floor((c[curr_pos]+1)*128);
+					rcol = Math.floor(r[curr_pos]*256);
+					$(svgDoc).find("#z").css({'fill':"rgb("+zcol+","+zcol+","+zcol+")"});
+					$(svgDoc).find("#r").css({'fill':"rgb("+rcol+","+rcol+","+rcol+")"});
+					$(svgDoc).find("#c").css({'fill':"rgb("+ccol+","+ccol+","+ccol+")"});
+					if (dloss == deval_cost) {
+						outcol = Math.floor((outs[curr_pos+1]/2+1.5)*128);
+					} else {						
+						outcol = Math.floor((outs[curr_pos+1]+1)*128);
+					}
+					$(svgDoc).find("#out"+(curr_pos+1)).css({'fill':"rgb("+outcol+","+outcol+","+outcol+")"});
+				};
+				var set_pos = function(pos) {
+					getDoc().getElementById('restgroup').style.transform = 'translate('+pos*49.497475+'px,0px)';
+				};
+				animate_pos = function(pos) {
+					$(getDoc().getElementById('restgroup')).animate({transform:'translate('+pos*49.497475+'px,0px)'});
+				};
+				var move_pos = function() {
+					svgDoc = getDoc();
+					curr_pos += 1;
+					setTimeout(function(){set_pos(curr_pos);},100);
+				};
+				
+
+				var move_rnn = function() {
+					if (curr_pos < 7) {
+						move_pos();
+						compute_pos();
+						if (curr_pos == 7) {
+							var shades = ['█','▓','▒','░',' ',' '];
+							console.log("iol|zrc|s|z-r");
+							var str = "";
+							c.forEach(function(val,i,arr) {
+								var pad = " ";
+								var inst = shades[Math.round((inps[i]+1)*2.5)];
+								inst = pad.substring(0, pad.length - inst.length) + inst;
+								var labst = shades[Math.round((labs[i])*5)];
+								labst = pad.substring(0, pad.length - labst.length) + labst;
+								var ct =shades[Math.round((c[i]+1)*2.5)];
+								ct = pad.substring(0, pad.length - ct.length) + ct;
+								var zt =shades[Math.round(z[i]*5)];
+								zt = pad.substring(0, pad.length - zt.length) + zt;
+								var rt = shades[Math.round(r[i]*5)];
+								rt = pad.substring(0, pad.length - rt.length) + rt;
+								var outst = shades[Math.round((outs[i+1]+1)*2.5)];
+								outst = pad.substring(0, pad.length - outst.length) + outst;
+								var sct = shades[Math.round(Math.abs(outs[i+1]-labs[i])*5)];
+								var zr = shades[Math.round((z[i]-r[i]+1)*2.5)];
+								str+=inst+outst+labst+'|'+zt+rt+ct+"|"+sct+"| "+ zr+" \n";
+								
+							});
+							console.log(str);
+						}
+						
+					}
+				};
+				function randn_bm(sig) {
+					var u = 1 - Math.random(); // Subtraction to flip [0, 1) to (0, 1].
+					var v = 1 - Math.random();
+					if (sig===undefined)
+						sig = 1;
+					return sig*Math.sqrt( -2.0 * Math.log( u ) ) * Math.cos( 2.0 * Math.PI * v );
+				}
+				
+				loss = eval_cost_l2;
+				dloss = deval_cost_l2;
+				var resetLoss = function() {
+					if ($('input[name=loss]:checked').val() == 'cc' ) {
+						loss = eval_cost;
+						dloss = deval_cost;
+					} else {
+						loss = eval_cost_l2;
+						dloss = deval_cost_l2;
+					}
+					console.log(loss());
+				};
+				document.getElementById('scheme').addEventListener('load',function(){
+					var svgDoc = getDoc();
+					set_pos(svgDoc,0);
+					vis_resample();
+					$('#reset').click(function(){reinit();});
+					$('#stepone').click(function(){move_rnn();});
+					$('#optimize').click(function(){optimize(1000); console.log(loss());});
+					$('#optimizefully').click(function(){optimize_fully(); console.log(loss());});
+					$('#resample').click(function(){vis_resample();});
+
+					$('input[type=number]').change(function(e){
+						myid = $(this).attr('id').replace('slider','');
+						svgDoc = getDoc();
+						number = Math.floor(sigmoid($(this).val())*256);
+						color = 'rgb(0,'+number+',0)';
+						$(svgDoc).find('#'+myid).css('fill',color);
+
+					});
+					$('input[type=number]').each(function(e){$(this).val(randn_bm(0.001)).change();});
+					$('input[type=radio]').change(function(e){resetLoss();});
+					$('input[type=checkbox]').change(function(e){updateSampler();});
+					$('#resetall').click(function() {reset_all();});
+				});
+				
+				</script>
+				</section>
+								<section>
+					<h4>Predecessor Information</h4>
+					<div style="width:45%;display:inline-block;">
+					<object type="image/svg+xml" data="images/cube-only-one-neighbor-2d.svg" id="svgObject3"><!--fallback--></object>					<button id="svg3button">run</button>
+</div>
+					<div style="width:45%;display:inline-block;">
+					<object type="image/svg+xml" data="images/cube-conv-neighbor2.svg" id="svgObject4"><!--fallback--></object>					<button id="svg4button">run</button>
+</div>
+					<!--<button id="svg3resetbutton">reset</button>-->
+					<script>
+						document.getElementById('svgObject3').addEventListener('load',function(){
+							var a3 = document.getElementById("svgObject3");
+							var svgDoc3 = a3.contentDocument;
+							pinkarrow = svgDoc3.getElementById("pinkarrow");
+							greenarrow = svgDoc3.getElementById("greenarrow");
+							bluearrow = svgDoc3.getElementById("bluearrow");
+							yellowarrow = svgDoc3.getElementById("yellowarrow");
+							
+							var posy = 0;
+							var posp = 0;
+							var posb = 0;
+							var posg = 0;
+							var my = 12.5;
+							var mp = 10;
+							var mb = 20;
+							var mg = 33.333333333;
+							
+							pinkarrow.style.transform = "translate(0px,0px)";
+							greenarrow.style.transform = "translate(0px,0px)";
+							bluearrow.style.transform = "translate(0px,0px)";
+							yellowarrow.style.transform = "translate(0px,0px)";
+							var myinterval3;
+							var start3=function(){
+								posp = 100;
+								posg = 100;
+								posy = 100;
+								posb = 100;
+								pinkarrow.style.transform = "translate("+posp+"%,0px)";
+								greenarrow.style.transform = "translate(-"+posg+"%,0px)";
+								bluearrow.style.transform = "translate(0px,-"+posb+"%)";
+								yellowarrow.style.transform = "translate(0px,"+posy+"%)";
+								console.log("in svg3button");
+								myinterval3 = setInterval(next3,250);
+
+							};
+							var next3=function() {
+								change = 0;
+								if (posp >= 0) {
+									posp-=mp;
+									change = 1;
+								}
+								if (posg >= 0) {
+									posg-=mg;
+									change = 1;
+								}
+								if (posb >= 0) {
+									posb-=mb;
+									change = 1;
+								}
+								if (posy >= 0) {
+									posy-=my;
+									change = 1;
+								}
+								if (change) {
+								posp = Math.max(0,posp);
+								posy = Math.max(0,posy);
+								posg = Math.max(0,posg);
+								posb = Math.max(0,posb);
+								pinkarrow.style.transform = "translate("+posp+"%,0px)";
+								greenarrow.style.transform = "translate(-"+posg+"%,0px)";
+								bluearrow.style.transform = "translate(0px,-"+posb+"%)";
+								yellowarrow.style.transform = "translate(0px,"+posy+"%)";
+								} else {
+									clearInterval(myinterval3);
+								}
+							};
+							$('#svg3button').click(start3);
+						});
+					</script>
+					<!--<button id="svg3resetbutton">reset</button>-->
+					<script>
+						document.getElementById('svgObject4').addEventListener('load',function(){
+							var a4 = document.getElementById("svgObject4");
+							var svgDoc4 = a4.contentDocument;
+							var pinkarrow = svgDoc4.getElementById("pinkarrow");
+							var greenarrow = svgDoc4.getElementById("greenarrow");
+							var bluearrow = svgDoc4.getElementById("bluearrow");
+							var yellowarrow = svgDoc4.getElementById("yellowarrow");
+							
+							var posy = 0;
+							var posp = 0;
+							var posb = 0;
+							var posg = 0;
+							var my = 6.25;
+							var mp = 6;
+							var mb = 5;
+							var mg = 6.6666666666;
+							
+							pinkarrow.style.transform = "translate(0px,0px)";
+							greenarrow.style.transform = "translate(0px,0px)";
+							bluearrow.style.transform = "translate(0px,0px)";
+							yellowarrow.style.transform = "translate(0px,0px)";
+							var myinterval4;
+							var start4=function(){
+								posp = 60;
+								posg = 20;
+								posy = 50;
+								posb = 25;
+								pinkarrow.style.transform = "translate("+posp+"%,0px)";
+								greenarrow.style.transform = "translate(-"+posg+"%,0px)";
+								bluearrow.style.transform = "translate(0px,-"+posb+"%)";
+								yellowarrow.style.transform = "translate(0px,"+posy+"%)";
+								console.log("in svg4button");
+								myinterval4 = setInterval(next4,250);
+							};
+							var next4=function() {
+								var change = 0;
+								if (posp >= 0) {
+									posp-=mp;
+									change = 1;
+								}
+								if (posg >= 0) {
+									posg-=mg;
+									change = 1;
+								}
+								if (posb >= 0) {
+									posb-=mb;
+									change = 1;
+								}
+								if (posy >= 0) {
+									posy-=my;
+									change = 1;
+								}
+								if (change) {
+									posp = Math.max(0,posp);
+									posy = Math.max(0,posy);
+									posg = Math.max(0,posg);
+									posb = Math.max(0,posb);
+									pinkarrow.style.transform = "translate("+posp+"%,0px)";
+									greenarrow.style.transform = "translate(-"+posg+"%,0px)";
+									bluearrow.style.transform = "translate(0px,-"+posb+"%)";
+									yellowarrow.style.transform = "translate(0px,"+posy+"%)";
+								} else {
+									clearInterval(myinterval4);
+								}
+							};
+							$('#svg4button').click(start4);
+						});
+					</script>
+					<div style="width:45%;  display:inline-block;">
+					<h4 style="font-size:85%">GRU</h4>
+					<div style="width:44%; vertical-align:top; display:inline-block;">
+					<img src="images/LSTM3-var-GRU-only-scheme.png" style="border:none;box-shadow:none;"/>
+					<a href="http://colah.github.io/posts/2015-08-Understanding-LSTMs/" style="font-size:30%; vertical-align:top;">courtesy of colah's blog</a>
+					</div>
+					<div style="width:44%; display:inline-block; vertical-align:middle;">
+						<br>
+						<span style="font-size: 35%;">
+ $$r^j = \sigma([W_r x]^j + [U_r h_{t-1}]^j),$$
+ $$z^j = \sigma([W_z x]^j + [U_z h_{t-1}]^j),$$
+ $$\tilde{h}^j_t = \phi([Wx]^j + [U(r \odot h_{t-1})]^j),$$
+ $$h^j_{t} = z^j\odot h^j_{t-1} + (1-z^j)\odot \tilde{h}^j_{t}.$$
+						</span>
+					</div>
+					</div>
+					<div style="width:49%;  display:inline-block; vertical-align:top;"><span ><h4 style="font-size:85%;">Convolutional (C)-GRU</h4><span style="font-size: 35%;">$$r^j = \sigma \left( \sum\limits_i^I (x^i*w_r^{i,j}) + \sum\limits_k^J ( h_{t-1}^k*u_r^{k,j} ) +b^j_r\right),$$
+ $$z^j = \sigma \left( \sum\limits_i^I (x^i*w_z^{i,j}) + \sum\limits_k^J ( h_{t-1}^k*u_z^{k,j} ) +b^j_z\right),$$
+$$\tilde{h}^j_t = \phi \left( \sum\limits_i^I (x^i*w^{i,j}) + r^j \odot \sum\limits_k^J ( h_{t-1}^k * u^{k,j} ) +b^j\right),$$
+  $$h^j_{t} = z^j\odot h^j_{t-1} + (1-z^j)\odot\tilde{h}^j_{t}.$$</span></span></div>
+				</section>
+
+
+				<section>
+					<div >
+						<h4>MD-GRU</h4>
+					<object type="image/svg+xml" data="images/mdgrunotitle2-topath.svg" id="svgObject6"><!--fallback--></object>
+											<h4>Network</h4>
+
+					<object type="image/svg+xml" data="images/network-topath.svg" id="svgObject7"><!--fallback--></object>
+					</div>
+				</section>
+				
+				<section><h4>MrBrains13 WM/GM/CSF <br>Segmentation Challenge (3rd)</h4><div style="100%;vertical-align:middle;">
+				<img src="images/mdgru-images.png" style="display:inline-block; border:none; box-shadow: none; width:49%;"/>
+				<div style="float:right;display:inline-block;border:none; box-shadow: none; width:49%; ">
+					<object width="40%" style="display:inline-block; width:auto; padding-top:130px;" type="image/svg+xml" data="images/mdgru-table.svg" id="mdgru-table"><!--fallback--></object></div>
+				</div>
+				</section>
+				<section>
+					<h4>Longitudinal MS Lesion <br>Segmentation Challenge (top)</h4>
+					<div style="100%;vertical-align:middle;align-content:center;"><img src="images/longmsc2015-84.png" id="flipbook1" style="display:inline-block;border:none; box-shadow: none; width:100%;"/>
+				<div style="font-family:Computer Modern; font-size:40%; width:100%; display:inline-block;">
+
+				<b>Fig. 2. </b><i>Top row: LMSLSC data.</i> FLAIR, T2, PD and MPRAGE sequences. <i>Bottom row: MD-GRU Output.</i> predicted lesion probability and label of fourth network (#1,$\mu_\text{Dice}=0.6298$), predicted label of first network (#5,$\mu_\text{Dice}=0.6678$).</div>
+					</div>
+					<script>
+						flipbookid1 = 34;
+						document.getElementById('flipbook1').addEventListener('mousewheel',function(e){
+							diff1 = e.wheelDelta < 0 ? -1 : 1;
+							flipbookid1 = (diff1+flipbookid1+60)%60;
+							$('#flipbook1').attr('src',"images/longmsc2015-"+(50+flipbookid1%60)+".png");
+							console.log(flipbookid1);
+							return false; 
+						});
+					</script>
+				</section>
+				
+				<section>
+					
+					<h4> (ongoing) WMH <br>Segmentation Challenge</h4>
+					<div style="vertical-align:middle;align-content:center;"><img src="images/mdgrudiff-lesion-seg-28.png" id="flipbook" style="display:inline-block;border:none; box-shadow: none; width:60%;"/>
+				<div style="font-family:Computer Modern; font-size:40%; width:60%; display:inline-block;">
+
+				<b>Fig. 2. </b><i>Top row: WMH Challenge data.</i> T2 and T1 sequence together with manual labels. <i>Bottom row: MD-GRU Output.</i> predicted probability, predicted label, uncertainty of 8 samples.</div>
+					</div>
+					<script>
+						flipbookid = 8;
+						document.getElementById('flipbook').addEventListener('mousewheel',function(e){
+							diff2 = e.wheelDelta < 0 ? -1 : 1;
+							flipbookid = (diff2+flipbookid+20)%20;
+							$('#flipbook').attr('src',"images/mdgrudiff-lesion-seg-"+(20+flipbookid%20)+".png");
+							console.log(flipbookid);
+							return false; 
+						});
+						
+					</script>
+				</section>
+
+
 			</div>
 		</div>
 
@@ -41,7 +959,9 @@
 					{ src: 'plugin/markdown/marked.js' },
 					{ src: 'plugin/markdown/markdown.js' },
 					{ src: 'plugin/notes/notes.js', async: true },
-					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					// MathJax
+					//{ src: 'plugin/math/math.js', async: false }
 				]
 			});
 		</script>

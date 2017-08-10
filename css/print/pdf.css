@@ -170,3 +170,15 @@ ul, ol, div, p {
 	position: absolute;
 	font-size: 14px;
 }
+
+/* Hide controls */
+
+.reveal .button-controls {
+	display:none;
+}
+.reveal input {
+	display:none;
+}
+.reveal button {
+	display: none;
+}
