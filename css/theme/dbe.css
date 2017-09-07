@@ -54,8 +54,6 @@ body {
   text-shadow: none;
   word-wrap: break-word; }
 
-.reveal h4,
-.reveal h5,
 .reveal h6 {
   position: relative;
   left: 20%;
@@ -69,11 +67,30 @@ body {
   font-size: 1.6em; }
 
 .reveal h3 {
-  font-size: 1.3em; }
+  font-size: 1.3em;}
 
 .reveal h4 {
-  font-size: 1em; }
-
+  font-size: 0.8em;
+    left:0%;
+  right:0%;
+  padding-left:20%;
+  padding-right:20%;
+  min-height:15%;
+  width:60%;
+  z-index:0;
+  margin-top:15px;
+  margin-bottom:45px;}
+.reveal h5 {
+  font-size: 0.8em;
+  left:0%;
+  right:0%;
+  padding-left:20%;
+  padding-right:20%;
+  width:60%;
+  z-index:0;
+  margin-top:15px;
+  margin-bottom:15px;
+}
 .reveal h1 {
   text-shadow: none; }
 
@@ -307,7 +324,7 @@ div.logo_unibas {
       position: fixed;
     width: 15%;
     height: 15%;
-    margin-top: 20px;
+    margin-top: 10px;
     margin-left: 20px;
     left: 0px;
 }
@@ -324,9 +341,10 @@ div.logo_dbe {
     position: fixed;
     width: 15%;
     height: 15%;
-    margin-top: 20px;
+    margin-top: 15px;
     margin-right: 25px;
     right: 0px;
+    z-index:1000;
 }
 div.logo_dbe img {
   max-width:100%;

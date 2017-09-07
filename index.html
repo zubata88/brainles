@@ -93,25 +93,52 @@
 			</object>
 		</div>
 <section class="center">
-					<h3>Multi-dimensional Gated Recurrent Units (MD-GRU) for Semantic Segmentation</h3>
+
+					<h3>Automated Segmentation of <br>MS Lesions using <br>MD Gated Recurrent Units</h3>
 					<br>
 					<p>Simon Andermatt, Simon Pezold, Philippe Cattin</p>
 					
 				</section>
-				<section><h4>Segmentation <br>with Supervised Learning</h4>
+				<section><h4>Semantic Segmentation</h4>
 				Data:
-				<div >
- <img style="border:none; width:49%; height:49%; vertical-align:middle; display:inline-block;" src="images/mdgru-lesion-seg-31-22.png">
- <img style="border:none; width:49%; height:49%; vertical-align:middle; display:inline-block;" src="images/mdgru-lesion-seg-2-18.png">
+				<div style="height:20%;">
+ <img style="border:none;  vertical-align:middle; box-shadow: none" src="images/givendata.png">
+ <!--<img style="border:none; width:49%; height:49%; vertical-align:middle; display:inline-block;" src="images/mdgru-lesion-seg-2-18.png">-->
 </div>
 				Goal:
-<div style="">
-<img style="border:none; width:40%; vertical-align:middle; display:inline-block;"  src="images/mdgru-lesion-seg-37-33-left.png"><div style="display:inline-block; margin:10px; padding:20px; border:5px solid gray;" class="fragment">$F_\theta(I)=S$</div>
- <img style="border:none; width:20%; vertical-align:middle; display:inline-block;" class=""  src="images/mdgru-lesion-seg-37-33-right.png">
+<div style="height:10%;">
+<img style="border:none; vertical-align:middle; display:inline; width:53%"  src="images/testdata.png"><div style="margin-left:10px; padding:20px; border:5px solid gray;  display:inline;" class="fragment">$F_\theta(I)=S$</div>
+ <img style="border:none; vertical-align:middle; display:inline; width:13%" class=""  src="images/test04_01_slice080.png">
 </div>
-<div style="font-size:50%; padding-top:20px;">(Data from  <a href="http://wmh.isi.uu.nl/" >WMH Challenge MICCAI 2017</a>)</div>
+<div style="font-size:50%; padding-top:20px;">(Data from  <a href="https://smart-stats-tools.org/node/26" >Longitudinal Multiple Sclerosis Lesion Segmentation Challenge ISBI 2015</a>)</div>
 				</section>
-				<section id="firstjssection">
+				
+				<section>
+					<div>
+						<h4>RNN / GRU</h4>
+						<img width="50%" style="border:none; vertical-align:middle; box-shadow:none;" src="images/RNN-unrolled.png"/>
+						<img width="50%" style="border:none; vertical-align:middle; box-shadow:none;" src="images/LSTM3-var-GRU.png"/><br>
+						<div style="font-size:45%; vertical-align:top;">courtesy of colah's blog:  <a href="http://colah.github.io/posts/2015-08-Understanding-LSTMs/" > http://colah.github.io/posts/2015-08-Understanding-LSTMs/</a>.</div>
+
+					<!--<object type="image/svg+xml" data="images/mdgrunotitle2-topath.svg" id="svgObject6"></object>
+											<h4>Network</h4>
+
+					<object type="image/svg+xml" data="images/network-topath.svg" id="svgObject7"></object>-->
+					</div>
+				</section>
+				<section>
+					<div >
+						<h4>MD-GRU</h4>
+					<object type="image/svg+xml" data="images/mdgrunotitle2-topath.svg" id="svgObject6"><!--fallback--></object>
+											<h4>Network</h4>
+
+					<object type="image/svg+xml" data="images/network-topath.svg" id="svgObject7"><!--fallback--></object>
+					</div>
+
+				</section>
+
+				
+				<!--<section id="firstjssection">
 					<h4>Recurrent Neural Network (RNN) </h4>
 					<h6>toy example:</h6>
 					<object type="image/svg+xml" data="images/simplernngatto-topath2-encoding.svg" id="svgObject"></object>
@@ -263,10 +290,11 @@
 						}
 						});
 					</script>
-				</section>
-
-				<section><h4>Most simple GRU Setup</h4>
-				<object type="image/svg+xml" data="images/scheme.svg" id="scheme"><!--fallback--></object>
+				</section>-->
+				<!--
+				
+				<section><h4>Gated Recurrent Unit</h4>
+				<object type="image/svg+xml" data="images/scheme.svg" id="scheme"></object>
 				<br>
 				<span class="button-controls" style="font-size: 60%">
 				Wz<input style="width:50px" id="sliderwz" type ="number" min ="-100" max="100" step ="0.1" value ="0" step="any" />
@@ -714,88 +742,16 @@
 				});
 				
 				</script>
-				</section>
-								<section>
-					<h4>Predecessor Information</h4>
-					<div style="width:45%;display:inline-block;">
-					<object type="image/svg+xml" data="images/cube-only-one-neighbor-2d.svg" id="svgObject3"><!--fallback--></object>					<button id="svg3button">run</button>
-</div>
-					<div style="width:45%;display:inline-block;">
-					<object type="image/svg+xml" data="images/cube-conv-neighbor2.svg" id="svgObject4"><!--fallback--></object>					<button id="svg4button">run</button>
-</div>
-					<!--<button id="svg3resetbutton">reset</button>-->
-					<script>
-						document.getElementById('svgObject3').addEventListener('load',function(){
-							var a3 = document.getElementById("svgObject3");
-							var svgDoc3 = a3.contentDocument;
-							pinkarrow = svgDoc3.getElementById("pinkarrow");
-							greenarrow = svgDoc3.getElementById("greenarrow");
-							bluearrow = svgDoc3.getElementById("bluearrow");
-							yellowarrow = svgDoc3.getElementById("yellowarrow");
-							
-							var posy = 0;
-							var posp = 0;
-							var posb = 0;
-							var posg = 0;
-							var my = 12.5;
-							var mp = 10;
-							var mb = 20;
-							var mg = 33.333333333;
-							
-							pinkarrow.style.transform = "translate(0px,0px)";
-							greenarrow.style.transform = "translate(0px,0px)";
-							bluearrow.style.transform = "translate(0px,0px)";
-							yellowarrow.style.transform = "translate(0px,0px)";
-							var myinterval3;
-							var start3=function(){
-								posp = 100;
-								posg = 100;
-								posy = 100;
-								posb = 100;
-								pinkarrow.style.transform = "translate("+posp+"%,0px)";
-								greenarrow.style.transform = "translate(-"+posg+"%,0px)";
-								bluearrow.style.transform = "translate(0px,-"+posb+"%)";
-								yellowarrow.style.transform = "translate(0px,"+posy+"%)";
-								console.log("in svg3button");
-								myinterval3 = setInterval(next3,250);
+				</section>-->
+								<!--<section>
+					<h4>Convolutional (C)-GRU</h4>
 
-							};
-							var next3=function() {
-								change = 0;
-								if (posp >= 0) {
-									posp-=mp;
-									change = 1;
-								}
-								if (posg >= 0) {
-									posg-=mg;
-									change = 1;
-								}
-								if (posb >= 0) {
-									posb-=mb;
-									change = 1;
-								}
-								if (posy >= 0) {
-									posy-=my;
-									change = 1;
-								}
-								if (change) {
-								posp = Math.max(0,posp);
-								posy = Math.max(0,posy);
-								posg = Math.max(0,posg);
-								posb = Math.max(0,posb);
-								pinkarrow.style.transform = "translate("+posp+"%,0px)";
-								greenarrow.style.transform = "translate(-"+posg+"%,0px)";
-								bluearrow.style.transform = "translate(0px,-"+posb+"%)";
-								yellowarrow.style.transform = "translate(0px,"+posy+"%)";
-								} else {
-									clearInterval(myinterval3);
-								}
-							};
-							$('#svg3button').click(start3);
-						});
-					</script>
+					<!--<div style="width:45%;display:inline-block;">
+					<object type="image/svg+xml" data="images/cube-conv-neighbor2.svg" id="svgObject4"></object>					<button id="svg4button">run</button>
+</div>-->
+
 					<!--<button id="svg3resetbutton">reset</button>-->
-					<script>
+					<!--<script>
 						document.getElementById('svgObject4').addEventListener('load',function(){
 							var a4 = document.getElementById("svgObject4");
 							var svgDoc4 = a4.contentDocument;
@@ -863,44 +819,92 @@
 							};
 							$('#svg4button').click(start4);
 						});
-					</script>
-					<div style="width:45%;  display:inline-block;">
-					<h4 style="font-size:85%">GRU</h4>
-					<div style="width:44%; vertical-align:top; display:inline-block;">
-					<img src="images/LSTM3-var-GRU-only-scheme.png" style="border:none;box-shadow:none;"/>
-					<a href="http://colah.github.io/posts/2015-08-Understanding-LSTMs/" style="font-size:30%; vertical-align:top;">courtesy of colah's blog</a>
-					</div>
-					<div style="width:44%; display:inline-block; vertical-align:middle;">
-						<br>
-						<span style="font-size: 35%;">
- $$r^j = \sigma([W_r x]^j + [U_r h_{t-1}]^j),$$
- $$z^j = \sigma([W_z x]^j + [U_z h_{t-1}]^j),$$
- $$\tilde{h}^j_t = \phi([Wx]^j + [U(r \odot h_{t-1})]^j),$$
- $$h^j_{t} = z^j\odot h^j_{t-1} + (1-z^j)\odot \tilde{h}^j_{t}.$$
-						</span>
-					</div>
-					</div>
-					<div style="width:49%;  display:inline-block; vertical-align:top;"><span ><h4 style="font-size:85%;">Convolutional (C)-GRU</h4><span style="font-size: 35%;">$$r^j = \sigma \left( \sum\limits_i^I (x^i*w_r^{i,j}) + \sum\limits_k^J ( h_{t-1}^k*u_r^{k,j} ) +b^j_r\right),$$
- $$z^j = \sigma \left( \sum\limits_i^I (x^i*w_z^{i,j}) + \sum\limits_k^J ( h_{t-1}^k*u_z^{k,j} ) +b^j_z\right),$$
+					</script>--><!--
+
+					<div style="  display:inline-block; vertical-align:top;"><div style="font-size: 35%; float:left;">$$r^j = \sigma \left( \sum\limits_i^I (x^i*w_r^{i,j}) + \sum\limits_k^J ( h_{t-1}^k*u_r^{k,j} ) +b^j_r\right),$$
+ $$z^j = \sigma \left( \sum\limits_i^I (x^i*w_z^{i,j}) + \sum\limits_k^J ( h_{t-1}^k*u_z^{k,j} ) +b^j_z\right),$$</div><div style="font-size: 35%;float:left;">
 $$\tilde{h}^j_t = \phi \left( \sum\limits_i^I (x^i*w^{i,j}) + r^j \odot \sum\limits_k^J ( h_{t-1}^k * u^{k,j} ) +b^j\right),$$
-  $$h^j_{t} = z^j\odot h^j_{t-1} + (1-z^j)\odot\tilde{h}^j_{t}.$$</span></span></div>
-				</section>
-
-
-				<section>
-					<div >
-						<h4>MD-GRU</h4>
-					<object type="image/svg+xml" data="images/mdgrunotitle2-topath.svg" id="svgObject6"><!--fallback--></object>
-											<h4>Network</h4>
-
-					<object type="image/svg+xml" data="images/network-topath.svg" id="svgObject7"><!--fallback--></object>
+  $$h^j_{t} = z^j\odot h^j_{t-1} + (1-z^j)\odot\tilde{h}^j_{t}.$$</div></div>
+					<div>
+					<object class="fragment"  width="80%" type="image/svg+xml" data="images/schemeconvpapersideways-original.svg" id="svgObject"></object>
 					</div>
+				</section>-->
+				<section>
+					<h4>Convolutional (C)-GRU</h4>
+					<div>
+					<object class="" width="100%" type="image/svg+xml" data="images/schemeconvpapersideways-original.svg" id="svgObject"></object>
+					</div>
+				</section>
+				<section>
+					<h4>DropConnect</h4>
+					<div>
+					<object class="" width="100%" type="image/svg+xml" data="images/schemeconvpapersideways-a.svg" id="svgObject"></object>
+					</div>
+				</section>
+				<section>
+					<h4>Placement of forget gate</h4>
+					<div>
+					<object class="" width="100%" type="image/svg+xml" data="images/schemeconvpapersideways-b.svg" id="svgObject"></object>
+					</div>
+				</section>
+				<section>
+					<h4>Batch normalization</h4>
+					<div>
+					<object class="" width="100%" type="image/svg+xml" data="images/schemeconvpapersideways-c.svg" id="svgObject"></object>
+					</div>
+				</section>
+				<section>
+					<h4>Residual learning /<br> weighted sum of states</h4>
+					<div>
+					<object class="" width="100%" type="image/svg+xml" data="images/mdgruconcatenate-original.svg" id="svgObject"></object>
+					</div>
+				</section>
+				<section>
+					<h4>Residual learning /<br> weighted sum of states</h4>
+					<div>
+					<object class="" width="100%" type="image/svg+xml" data="images/mdgruconcatenate.svg" id="svgObject"></object>
+					</div>
+				</section>
+				<section>
+					<h4>Data preprocessing and sampling</h4>
+					<ul style="line-height:1.5; font-size:85%; margin-top:5%;width:60%;">
+						<li>High-pass filtered images:</li>
+						<img src="images/showcasehighpass1.png" style="display:inline-block; border:none; box-shadow: none; width:15%; padding-bottom:30px;"><img src="images/showcasehighpass2.png" style="display:inline-block; border:none; box-shadow: none; width:15%; padding-bottom:30px;"><img src="images/anteroposterior.png" style="display:inline-block; border:none; box-shadow: none; width:60%;"/>
+
+						<li class="fragment">Data augmentation: <br> Deformation, Rotation, Scaling</li>
+						
+						<li class="fragment">Selective Sampling</li>
+					</ul>
+				</section>
+				<section><h4>Results on training data</h4>
+					<h5>Verified successful steps</h5>
+						<ol style="line-height:1.5; font-size:85%; margin:1%">
+							<li>High pass filtering of data <span style="color: red;">(-100%)</span></li>
+							<li>Data augmentation</li>
+							<li>Position of reset gate</li>
+							<li>Summation of directional output</li>
+						</ol>
+					<span class="fragment">
+					<h5>Improvements</h5>
+					
+					<ol style="line-height:1.5; font-size:85%; margin:1%">
+						<li>Selective sampling</li>
+						<li>DropConnect on state weights</li>
+						<li>Residual learning on MD-GRU level</li>
+						
+					</ol></span>
+				</section>
+				<section>
+					<h4>Results of Longitudinal MS Lesion Segmentation Challenge</h4>
+					<div style="font-family:Computer Modern; font-size:60%; width:90%; text-align:left; display:inline-block; margin-top:5%;">
+				<b>Table 1. </b> Top 5 entries of the LMSLSC Leaderboard. <i>Columns:</i> Volume Correlation and Dice, Positive Predictive Value, Lesion False Positive Rate and Lesion True Positive Rate in %. <i>Rows:</i> Top 5 entries of challenge leaderboard</div>
+					<img src="images/m2017-10-table.png" style=" border:none; box-shadow: none;"/>
 				</section>
 				
-				<section><h4>MrBrains13 WM/GM/CSF Segmentation Challenge (3rd)</h4><div style="100%;vertical-align:middle;">
+				<!--<section><h4>MrBrains13 WM/GM/CSF Segmentation Challenge (3rd)</h4><div style="100%;vertical-align:middle;">
 				<img src="images/mdgru-images.png" style="display:inline-block; border:none; box-shadow: none; width:49%;"/>
 				<div style="float:right;display:inline-block;border:none; box-shadow: none; width:49%; ">
-					<object width="40%" style="display:inline-block; width:auto; padding-top:130px;" type="image/svg+xml" data="images/mdgru-table.svg" id="mdgru-table"><!--fallback--></object></div>
+					<object width="40%" style="display:inline-block; width:auto; padding-top:130px;" type="image/svg+xml" data="images/mdgru-table.svg" id="mdgru-table"></object></div>
 				</div>
 				</section>
 				<section>
@@ -941,9 +945,14 @@ $$\tilde{h}^j_t = \phi \left( \sum\limits_i^I (x^i*w^{i,j}) + r^j \odot \sum\lim
 						});
 						
 					</script>
+				</section>-->
+
+				<section>
+					<!--<ul><li>Questions?</li></ul><br><br><br>-->
+					<div style="font-size:80%; margin-top:250px; margin-bottom:250px;">Acknowledgments:<br>
+					 <img style="border:none; max-width:40%; vertical-align:middle; box-shadow: none;" src="images/miaclogo.png"/>
+					</div>
 				</section>
-
-
 			</div>
 		</div>
 
@@ -956,6 +965,9 @@ $$\tilde{h}^j_t = \phi \left( \sum\limits_i^I (x^i*w^{i,j}) + r^j \odot \sum\lim
 			// - https://github.com/hakimel/reveal.js#dependencies
 			Reveal.initialize({
 				center:false,
+				slideNumber: true,
+				transition: 'none',
+				pdfMaxPagesPerSlide: 1,
 				dependencies: [
 					{ src: 'plugin/markdown/marked.js' },
 					{ src: 'plugin/markdown/markdown.js' },
