@@ -463,9 +463,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.4"
-     inkscape:cx="448.47225"
-     inkscape:cy="88.762358"
+     inkscape:zoom="11.2"
+     inkscape:cx="269.35048"
+     inkscape:cy="19.934316"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -486,7 +486,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -2213,18 +2213,21 @@
            x="-124.28571"
            y="322.36356" /></flowRegion><flowPara
          id="flowPara18445-0"
-         style="font-size:65.00000954%;baseline-shift:sub">~</flowPara></flowRoot>    <flowRoot
+         style="font-size:65.00000954%;baseline-shift:sub">~</flowPara></flowRoot>    <text
        xml:space="preserve"
-       id="flowRoot18439-9"
        style="font-style:normal;font-weight:normal;font-size:10px;line-height:125%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       transform="translate(228.33184,237.90659)"><flowRegion
-         id="flowRegion18441-6"><rect
-           id="rect18443-3"
-           width="26.071428"
-           height="17.857143"
-           x="-124.28571"
-           y="322.36356" /></flowRegion><flowPara
-         id="flowPara18445-8">~</flowPara></flowRoot>    <text
+       x="117.69596"
+       y="570.23737"
+       id="text15810"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         x="117.69596"
+         y="570.23737"
+         id="tspan15812"><tspan
+           x="117.69596"
+           y="570.23737"
+           id="tspan15814">~</tspan></tspan></text>
+    <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10px;line-height:125%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        x="275.11642"
