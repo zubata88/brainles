@@ -836,13 +836,13 @@ $$\tilde{h}^j_t = \phi \left( \sum\limits_i^I (x^i*w^{i,j}) + r^j \odot \sum\lim
 					</div>
 				</section>
 				<section>
-					<h4>DropConnect</h4>
+					<h4>Placement of forget gate</h4>
 					<div>
 					<object class="" width="100%" type="image/svg+xml" data="images/schemeconvpapersideways-a.svg" id="svgObject"></object>
 					</div>
 				</section>
 				<section>
-					<h4>Placement of forget gate</h4>
+					<h4>DropConnect on input/state</h4>
 					<div>
 					<object class="" width="100%" type="image/svg+xml" data="images/schemeconvpapersideways-b.svg" id="svgObject"></object>
 					</div>
@@ -854,15 +854,15 @@ $$\tilde{h}^j_t = \phi \left( \sum\limits_i^I (x^i*w^{i,j}) + r^j \odot \sum\lim
 					</div>
 				</section>
 				<section>
-					<h4>Residual learning /<br> weighted sum of states</h4>
+					<h4>Weighted sum of states</h4>
 					<div>
-					<object class="" width="100%" type="image/svg+xml" data="images/mdgruconcatenate-original.svg" id="svgObject"></object>
+					<object class="" width="100%" type="image/svg+xml" data="images/mdgruconcatenate-a.svg" id="svgObject"></object>
 					</div>
 				</section>
 				<section>
-					<h4>Residual learning /<br> weighted sum of states</h4>
+					<h4>Residual learning</h4>
 					<div>
-					<object class="" width="100%" type="image/svg+xml" data="images/mdgruconcatenate.svg" id="svgObject"></object>
+					<object class="" width="100%" type="image/svg+xml" data="images/mdgruconcatenate-b.svg" id="svgObject"></object>
 					</div>
 				</section>
 				<section>
@@ -871,27 +871,29 @@ $$\tilde{h}^j_t = \phi \left( \sum\limits_i^I (x^i*w^{i,j}) + r^j \odot \sum\lim
 						<li>High-pass filtered images:</li>
 						<img src="images/showcasehighpass1.png" style="display:inline-block; border:none; box-shadow: none; width:15%; padding-bottom:30px;"><img src="images/showcasehighpass2.png" style="display:inline-block; border:none; box-shadow: none; width:15%; padding-bottom:30px;"><img src="images/anteroposterior.png" style="display:inline-block; border:none; box-shadow: none; width:60%;"/>
 
-						<li class="fragment">Data augmentation: <br> Deformation, Rotation, Scaling</li>
+						<li class="fragment">Data augmentation: <br> Deformation</li>
 						
 						<li class="fragment">Selective Sampling</li>
 					</ul>
 				</section>
 				<section><h4>Results on training data</h4>
-					<h5>Verified successful steps</h5>
-						<ol style="line-height:1.5; font-size:85%; margin:1%">
+					<p style="font-size:55%;">bl: 3000 training iterations on first 4, tested on 5th; DC on state, no def; <br>
+					CV bl: average of leave one out CV</p>
+					<h5>Validated method steps <span style="color: red;">(vs bl)</span></h5>
+						<ol style="line-height:1; font-size:75%; text-align:left;margin:1%">
 							<li>High pass filtering of data <span style="color: red;">(-100%)</span></li>
-							<li>Data augmentation</li>
-							<li>Position of reset gate</li>
-							<li>Summation of directional output</li>
+							<li>Summation of directional output <span style="color: red;">(-56%)</span></li>
+							<li>Position of reset gate <span style="color: red;">(-39%)</span></li>
 						</ol>
 					<span class="fragment">
-					<h5>Improvements</h5>
+					<h5>Improvements <span style="color: green;">(vs CV bl)</span></h5>
 					
-					<ol style="line-height:1.5; font-size:85%; margin:1%">
-						<li>Selective sampling</li>
-						<li>DropConnect on state weights</li>
-						<li>Residual learning on MD-GRU level</li>
-						
+					<ol style="line-height:1; font-size:75%; text-align:left; margin:1%">
+						<li>Selective sampling <span style="color: green;">(+66%)</span> </li>
+						<li>DropConnect on state weights <span style="color: green;">(+112%)</span></li>
+						<li>Residual learning on MD-GRU level <span style="color: green;">(+78%)</span></li>
+						<li>Data augmentation <span style="color: green;">(+83%)</span> </li>
+						<li>All <span style="color: green;">(+201%)</span></li>
 					</ol></span>
 				</section>
 				<section>
